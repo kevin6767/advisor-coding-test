@@ -12,7 +12,7 @@ export const ListingGroup = ({ listingData }) => {
         <div className="listing-group">
           {data.map((listing) => {
             return (
-              <div className="advisor-group-container">
+              <div className="advisor-group-container" key={listing.id}>
               {getAdvisorGroup({ listing })}
               <Divider />
               </div>
