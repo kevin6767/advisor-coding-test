@@ -1,5 +1,5 @@
 import { ListingAPI } from "./api/listings/route"
-import { ListingGroup } from "./components/listing-table/ListingGroup"
+import { ListingGroup } from "./components/listing-group/ListingGroup"
 import "./homepage.css"
 
 export default async function HomePage() {
