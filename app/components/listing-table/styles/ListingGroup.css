@@ -1,0 +1,32 @@
+.listing-group-container {
+    display: block;
+    text-align: center;
+    width: 800px;
+}
+
+.listing-group {
+  display: block;
+}
+.advisor-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+.advisor-personal-information-container {
+  display: flex;
+}
+
+.advisor-call-now {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.advisor-name {
+  padding-left: 10px;
+  font-size: 18px;
+}
+
+.listing-group-header {
+    justify-content: center;
+}
