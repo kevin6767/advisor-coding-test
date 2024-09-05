@@ -5,28 +5,40 @@ import PhoneIcon from "@mui/icons-material/Phone"
 import ChatIcon from "@mui/icons-material/Chat"
 import "./styles/ListingGroup.css"
 import { useEffect, useState } from "react"
-import { ListingAPI } from "@/app/api/listings/route"
+import { ListingAPI, ListingAvaibilityAPI } from "@/app/api/listings/route"
 
 const API_INTERVAL = 30000
 
 export const ListingGroup = ({ initialData }) => {
   const [listingData, setListingData] = useState(initialData.data)
-
   useEffect(() => {
     const interval = setInterval(async () => {
-      const listings = await ListingAPI.get()
-      setListingData(listings.data)
-    }, API_INTERVAL)
-
-    return () => clearInterval(interval)
-  }, [])
+      const updatedListings = await Promise.all(
+        listingData.map(async (listing) => {
+          const res = await ListingAvaibilityAPI.get(listing.id);
+          // Merge the original listing with the updated availability data
+          return {
+            ...listing,
+            ['call-availability']: res["call-availability"], 
+            ['chat-availability']: res["chat-availability"] 
+          };
+        })
+      );
+  
+      // Update the state with the new listing data
+      setListingData(updatedListings);
+  
+    }, API_INTERVAL);
+  
+    return () => clearInterval(interval);
+  }, [listingData, API_INTERVAL]);
 
   return (
     <div className="listing-group-container">
       <div className="listing-group-header">
         <h3>Advisor Availability</h3>
         <div className="listing-group">
-          {listingData.map((listing) => {
+          {!listingData ? <div>Something went wrong!</div> : listingData.map((listing) => {
             return (
               <div className="advisor-group-container" key={listing.id}>
                 <AdvisorGroup {...{ listing }} />
