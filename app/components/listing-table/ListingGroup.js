@@ -1,20 +1,36 @@
+"use client"
+
 import { Avatar, Button, Divider } from "@mui/material"
 import PhoneIcon from "@mui/icons-material/Phone"
 import ChatIcon from "@mui/icons-material/Chat"
 import "./styles/ListingGroup.css"
+import { useEffect, useState } from "react"
+import { ListingAPI } from "@/app/api/listings/route"
 
-export const ListingGroup = ({ listingData }) => {
-  const { data } = listingData
+const API_INTERVAL = 30000
+
+export const ListingGroup = ({ initialData }) => {
+  const [listingData, setListingData] = useState(initialData.data)
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const listings = await ListingAPI.get()
+      setListingData(listings.data)
+    }, API_INTERVAL)
+
+    return () => clearInterval(interval)
+  }, [])
+
   return (
     <div className="listing-group-container">
       <div className="listing-group-header">
         <h3>Advisor Availability</h3>
         <div className="listing-group">
-          {data.map((listing) => {
+          {listingData.map((listing) => {
             return (
               <div className="advisor-group-container" key={listing.id}>
-              {getAdvisorGroup({ listing })}
-              <Divider />
+                <AdvisorGroup {...{ listing }} />
+                <Divider />
               </div>
             )
           })}
@@ -24,7 +40,7 @@ export const ListingGroup = ({ listingData }) => {
   )
 }
 
-const getAdvisorGroup = ({ listing }) => {
+const AdvisorGroup = ({ listing }) => {
   return (
     <div className="advisor-container" key={listing.id}>
       <div className="advisor-personal-information-container">
@@ -44,6 +60,7 @@ const getAdvisorGroup = ({ listing }) => {
             disabled={listing["call-availability"] === "offline"}
             variant="contained"
             size="small"
+            sx={{ backgroundColor: "#09adaf" }}
           >
             <PhoneIcon /> Call Now
           </Button>
@@ -53,6 +70,7 @@ const getAdvisorGroup = ({ listing }) => {
             disabled={listing["chat-availability"] === "offline"}
             variant="contained"
             size="small"
+            sx={{ backgroundColor: "#09adaf" }}
           >
             <ChatIcon /> Chat Now
           </Button>

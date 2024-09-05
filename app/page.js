@@ -1,6 +1,6 @@
 import { ListingAPI } from "./api/listings/route"
 import { ListingGroup } from "./components/listing-table/ListingGroup"
-import './homepage.css'
+import "./homepage.css"
 
 export default async function HomePage() {
   const listings = await ListingAPI.get()
@@ -8,7 +8,7 @@ export default async function HomePage() {
 
   return (
     <div className="home-page-container">
-      <ListingGroup listingData={listings} />
+      <ListingGroup initialData={listings} />
     </div>
   )
 }

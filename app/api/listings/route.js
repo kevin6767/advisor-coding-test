@@ -1,14 +1,12 @@
 const LISTING_URL = "http://demo2255213.mockable.io/listings"
 
 export const ListingAPI = {
-  get: async function (options = undefined) {
+  get: async function () {
     const response = await fetch(LISTING_URL, {
       method: "GET",
-      ...options,
-      next: {revalidate: 10}
+      cache: "no-cache",
     })
 
     return await response.json()
   },
 }
-
