@@ -15,23 +15,23 @@ export const ListingGroup = ({ initialData }) => {
     const interval = setInterval(async () => {
       const updatedListings = await Promise.all(
         listingData.map(async (listing) => {
-          const res = await ListingAvaibilityAPI.get(listing.id);
+          const res = await ListingAvaibilityAPI.get(listing.id)
           // Merge the original listing with the updated availability data
           return {
             ...listing,
             ['call-availability']: res["call-availability"], 
             ['chat-availability']: res["chat-availability"] 
-          };
+          }
         })
-      );
+      )
   
       // Update the state with the new listing data
-      setListingData(updatedListings);
+      setListingData(updatedListings)
   
-    }, API_INTERVAL);
+    }, API_INTERVAL)
   
-    return () => clearInterval(interval);
-  }, [listingData, API_INTERVAL]);
+    return () => clearInterval(interval)
+  }, [listingData, API_INTERVAL])
 
   return (
     <div className="listing-group-container">
